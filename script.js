@@ -1,60 +1,230 @@
-const counter = document.getElementById("counter");
-const percentage = document.getElementById("percentage");
-const resetBtn = document.getElementById("resetBtn");
+/* ==========================================
+   TASKFLOW
+   Growth Companion
+========================================== */
 
-const habits = document.querySelectorAll('input[type="checkbox"]');
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let goals = JSON.parse(localStorage.getItem("goals")) || [];
 
-function updateCounter() {
+/* ==========================================
+   RENDER
+========================================== */
 
-    let completed = 0;
+function render() {
 
-    habits.forEach(habit => {
-        if (habit.checked) {
-            completed++;
-        }
-    });
-
-    counter.textContent =
-        `Completed Today: ${completed} / ${habits.length}`;
-
-    const percent = Math.round(
-        (completed / habits.length) * 100
+    renderList(
+        todos,
+        "todoList",
+        "todoCounter",
+        "Task",
+        toggleTodo,
+        deleteTodo
     );
 
-    percentage.textContent =
-        `Success Rate: ${percent}%`;
+    renderList(
+        goals,
+        "wishList",
+        "goalCounter",
+        "Goal",
+        toggleGoal,
+        deleteGoal
+    );
+
+    saveData();
+
 }
 
-habits.forEach(habit => {
+/* ==========================================
+   UNIVERSAL LIST RENDERER
+========================================== */
 
-    const savedValue = localStorage.getItem(habit.id);
+function renderList(data, listID, counterID, singular, toggleFn, deleteFn) {
 
-    if (savedValue === "true") {
-        habit.checked = true;
+    const list = document.getElementById(listID);
+    const counter = document.getElementById(counterID);
+
+    counter.textContent =
+        `${data.length} ${data.length === 1 ? singular : singular + "s"}`;
+
+    if (data.length === 0) {
+
+        list.innerHTML = `
+
+            <div class="empty-state">
+
+                <h3>Nothing here yet</h3>
+
+                <p>
+                    Add your first ${singular.toLowerCase()} to get started.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
     }
 
-    habit.addEventListener("change", () => {
+    list.innerHTML = data.map((item, index) => `
 
-        localStorage.setItem(habit.id, habit.checked);
+        <li>
 
-        updateCounter();
+            <div class="task">
+
+                <input
+                    type="checkbox"
+                    ${item.done ? "checked" : ""}
+                    onclick="${toggleFn.name}(${index})">
+
+                <span class="${item.done ? "done" : ""}">
+                    ${item.text}
+                </span>
+
+            </div>
+
+            <div class="actions">
+
+                <button
+                    class="danger"
+                    onclick="${deleteFn.name}(${index})">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+        </li>
+
+    `).join("");
+
+}
+
+/* ==========================================
+   TODAY'S FOCUS
+========================================== */
+
+function addTodo() {
+
+    const input = document.getElementById("todoInput");
+
+    const value = input.value.trim();
+
+    if (!value) return;
+
+    todos.unshift({
+
+        text: value,
+        done: false
 
     });
 
-});
+    input.value = "";
 
-resetBtn.addEventListener("click", () => {
+    render();
 
-    habits.forEach(habit => {
+}
 
-        habit.checked = false;
+function toggleTodo(index) {
 
-        localStorage.setItem(habit.id, false);
+    todos[index].done = !todos[index].done;
+
+    render();
+
+}
+
+function deleteTodo(index) {
+
+    todos.splice(index, 1);
+
+    render();
+
+}
+
+/* ==========================================
+   FUTURE GOALS
+========================================== */
+
+function addWish() {
+
+    const input = document.getElementById("wishInput");
+
+    const value = input.value.trim();
+
+    if (!value) return;
+
+    goals.unshift({
+
+        text: value,
+        done: false
 
     });
 
-    updateCounter();
+    input.value = "";
 
-});
+    render();
 
-updateCounter();
+}
+
+function toggleGoal(index) {
+
+    goals[index].done = !goals[index].done;
+
+    render();
+
+}
+
+function deleteGoal(index) {
+
+    goals.splice(index, 1);
+
+    render();
+
+}
+
+/* ==========================================
+   LOCAL STORAGE
+========================================== */
+
+function saveData() {
+
+    localStorage.setItem("todos", JSON.stringify(todos));
+
+    localStorage.setItem("goals", JSON.stringify(goals));
+
+}
+
+/* ==========================================
+   ENTER KEY SUPPORT
+========================================== */
+
+document
+    .getElementById("todoInput")
+    .addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            addTodo();
+
+        }
+
+    });
+
+document
+    .getElementById("wishInput")
+    .addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            addWish();
+
+        }
+
+    });
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+
+render();

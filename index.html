@@ -1,52 +1,172 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Habit Tracker</title>
-    <link rel="stylesheet" href="style.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Taskflow</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="style.css">
+
 </head>
 
 <body>
 
-    <h1>My Habit Tracker</h1>
+    <main class="container">
 
-    <div class="habit">
-        <input type="checkbox" id="Namaz">
-        <label>Namaz</label>
-    </div>
+        <!-- =====================
+             HEADER
+        ====================== -->
 
-    <div class="habit">
-        <input type="checkbox" id="Quran Recitation">
-        <label>Quran Recitation</label>
-    </div>
+        <header class="page-header">
 
-    <div class="habit">
-        <input type="checkbox" id="10K Steps">
-        <label>10K Steps</label>
-    </div>
+            <p class="app-tag">
+                Growth Companion
+            </p>
 
-    <div class="habit">
-        <input type="checkbox" id="Stretching + Pilates">
-        <label>Stretching + Pilates</label>
-    </div>
+            <h1 class="app-title">
+                Taskflow
+            </h1>
 
-    <div class="habit">
-        <input type="checkbox" id="Learn + Implement Skill">
-        <label>Learn + Implement Skill</label>
-    </div>
+            <p class="hero-text">
+                Focus on what matters today while keeping tomorrow in sight.
+            </p>
 
-    <div class="habit">
-        <input type="checkbox" id="2L Water">
-        <label>2L Water</label>
-    </div>
+        </header>
 
-    <div class="habit">
-        <input type="checkbox" id="Reduce Sugar">
-        <label>Reduce Sugar</label>
-    </div>
-    <p id="counter">Completed Today: 0 / 7</p>
-    <p id="percentage">Success Rate: 0%</p>
-    <button id="resetBtn">Reset Day</button>
+
+        <!-- =====================
+             TODAY'S FOCUS
+        ====================== -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Today's Focus</h2>
+
+                    <p>
+                        Prioritize today's most important work.
+                    </p>
+
+                </div>
+
+                <div class="counter"
+                     id="todoCounter">
+
+                    0 Tasks
+
+                </div>
+
+            </div>
+
+
+            <div class="input-row">
+
+                <input
+                    id="todoInput"
+                    type="text"
+                    placeholder="What needs your attention today?">
+
+                <button
+                    class="primary"
+                    onclick="addTodo()">
+
+                    +
+
+                </button>
+
+            </div>
+
+            <ul id="todoList"></ul>
+
+        </section>
+
+
+
+        <!-- =====================
+             FUTURE GOALS
+        ====================== -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Future Goals</h2>
+
+                    <p>
+                        Keep your long-term ambitions within reach.
+                    </p>
+
+                </div>
+
+                <div class="counter"
+                     id="goalCounter">
+
+                    0 Goals
+
+                </div>
+
+            </div>
+
+            <div class="input-row">
+
+                <input
+                    id="wishInput"
+                    type="text"
+                    placeholder="Add something you're working toward...">
+
+                <button
+                    class="primary"
+                    onclick="addWish()">
+
+                    +
+
+                </button>
+
+            </div>
+
+            <ul id="wishList"></ul>
+
+        </section>
+
+
+
+        <!-- =====================
+             FOOTER
+        ====================== -->
+
+        <footer>
+
+            <p>
+                Small progress every day becomes remarkable growth over time.
+            </p>
+
+        </footer>
+
+    </main>
+
     <script src="script.js"></script>
 
 </body>
+
 </html>
